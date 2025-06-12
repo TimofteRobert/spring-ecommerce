@@ -25,6 +25,16 @@ public class CategoryServiceImplementation implements CategoryService {
     }
 
     @Override
+    public Category updateCategory(Category category, Long categoryId) {
+        Category existingCategory = categories.stream().filter(c -> c.getCategoryId()
+                .equals(categoryId)).findFirst()
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Category with id: " + categoryId + " not found."));
+
+            existingCategory.setCategoryName(category.getCategoryName());
+            return existingCategory;
+    }
+
+    @Override
     public String deleteCategory(Long categoryId) {
         Category category = categories.stream().filter(c -> c.getCategoryId().equals(categoryId))
                 .findFirst().orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found"));
